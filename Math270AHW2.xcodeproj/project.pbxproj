@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		79BD02111DD7ADCC005F8287 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 79BD02101DD7ADCC005F8287 /* main.cpp */; };
+		79BD021B1DD7AEFA005F8287 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 79BD021A1DD7AEFA005F8287 /* main.cpp */; };
+		79BD021D1DD7AF05005F8287 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 79BD021C1DD7AF05005F8287 /* Makefile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +25,14 @@
 
 /* Begin PBXFileReference section */
 		79BD020D1DD7ADCC005F8287 /* Math270AHW2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Math270AHW2; sourceTree = BUILT_PRODUCTS_DIR; };
-		79BD02101DD7ADCC005F8287 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		79BD02171DD7AEFA005F8287 /* EnergyTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnergyTests.h; path = Math_270A_Fall_2016_HW2/EnergyTests.h; sourceTree = SOURCE_ROOT; };
+		79BD02181DD7AEFA005F8287 /* ImplicitQRSVD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImplicitQRSVD.h; path = Math_270A_Fall_2016_HW2/ImplicitQRSVD.h; sourceTree = SOURCE_ROOT; };
+		79BD02191DD7AEFA005F8287 /* LagrangianForce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LagrangianForce.h; path = Math_270A_Fall_2016_HW2/LagrangianForce.h; sourceTree = SOURCE_ROOT; };
+		79BD021A1DD7AEFA005F8287 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = Math_270A_Fall_2016_HW2/main.cpp; sourceTree = SOURCE_ROOT; };
+		79BD021C1DD7AF05005F8287 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = Math_270A_Fall_2016_HW2/Makefile; sourceTree = SOURCE_ROOT; };
+		79BD021E1DD7AF0D005F8287 /* SimulationDriver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SimulationDriver.h; path = Math_270A_Fall_2016_HW2/SimulationDriver.h; sourceTree = SOURCE_ROOT; };
+		79BD021F1DD7AF0D005F8287 /* SymmetricTridiagonal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SymmetricTridiagonal.h; path = Math_270A_Fall_2016_HW2/SymmetricTridiagonal.h; sourceTree = SOURCE_ROOT; };
+		79BD02201DD7AF0D005F8287 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Tools.h; path = Math_270A_Fall_2016_HW2/Tools.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +65,14 @@
 		79BD020F1DD7ADCC005F8287 /* Math270AHW2 */ = {
 			isa = PBXGroup;
 			children = (
-				79BD02101DD7ADCC005F8287 /* main.cpp */,
+				79BD02171DD7AEFA005F8287 /* EnergyTests.h */,
+				79BD02181DD7AEFA005F8287 /* ImplicitQRSVD.h */,
+				79BD02191DD7AEFA005F8287 /* LagrangianForce.h */,
+				79BD021A1DD7AEFA005F8287 /* main.cpp */,
+				79BD021C1DD7AF05005F8287 /* Makefile */,
+				79BD021E1DD7AF0D005F8287 /* SimulationDriver.h */,
+				79BD021F1DD7AF0D005F8287 /* SymmetricTridiagonal.h */,
+				79BD02201DD7AF0D005F8287 /* Tools.h */,
 			);
 			path = Math270AHW2;
 			sourceTree = "<group>";
@@ -119,7 +134,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79BD02111DD7ADCC005F8287 /* main.cpp in Sources */,
+				79BD021D1DD7AF05005F8287 /* Makefile in Sources */,
+				79BD021B1DD7AEFA005F8287 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,6 +232,14 @@
 		79BD02151DD7ADCC005F8287 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = /usr/local/include/eigen3/;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-I$(/usr/local/include/eigen3/)",
+					"-O3",
+					"-march=native",
+					"-DNDEBUG",
+					"-std=c++14",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -223,6 +247,14 @@
 		79BD02161DD7ADCC005F8287 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = /usr/local/include/eigen3/;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-I$(/usr/local/include/eigen3/)",
+					"-O3",
+					"-march=native",
+					"-DNDEBUG",
+					"-std=c++14",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -246,6 +278,7 @@
 				79BD02161DD7ADCC005F8287 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
