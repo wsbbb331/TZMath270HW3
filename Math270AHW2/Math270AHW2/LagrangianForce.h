@@ -12,9 +12,9 @@ class LagrangianForces{
 public:
   LagrangianForces(){}
   virtual T PotentialEnergy(const TVect& x){return (T)0;}
-  virtual void AddForce(TVect& force,const TVect& x,T scale=(T)1){}
-  virtual void AddForceDerivative(SymmetricTridiagonal<T>& A,const TVect& x,T scale=(T)1){}
-  virtual void AddForceDifferential(TVect& df,const TVect& x,const TVect& dx,T scale=(T)1){}
+  virtual void AddForce(TVect& force,const TVect& x,T scale=(T)1, T tb = (T)0){}
+  virtual void AddForceDerivative(SymmetricTridiagonal<T>& A,const TVect& x,T scale=(T)1, bool fixed_a = false){}
+  virtual void AddForceDifferential(TVect& df,const TVect& x,const TVect& dx,T scale=(T)1, bool fixed_a=false){}
 };
 
 template <class T>
@@ -89,16 +89,21 @@ public:
     return PE;
   }
 
-  void AddForce(TVect& force,const TVect& x,T scale=(T)1){
+  void AddForce(TVect& force,const TVect& x,T scale=(T)1, T tb = (T)0){
     for(int e=0;e<N-1;e++){
       T P;cons_model.P(P,F(x,e));
-      force(e)+=scale*P;
+      force(e)+=scale*P + tb;
       force(e+1)-=scale*P;
     }
+      force(N-1)+= tb;
   }
 
-  void AddForceDerivative(SymmetricTridiagonal<T>& A,const TVect& x,T scale){
-    for(int e=0;e<N-1;e++){
+  void AddForceDerivative(SymmetricTridiagonal<T>& A,const TVect& x,T scale, bool fixed_a=false){
+      T dPdF;cons_model.dPdF(dPdF,F(x,0));
+      T entry=scale*dPdF/dX;
+      A(0,0)+=-entry;
+      A(1,1)+=entry;
+    for(int e=1;e<N-1;e++){
       T dPdF;cons_model.dPdF(dPdF,F(x,e));
       TMat2 element_stiffness;
       T entry=scale*dPdF/dX;
@@ -109,7 +114,7 @@ public:
     }
   }
 
-  void AddForceDifferential(TVect& result,const TVect& x,const TVect& dx,T scale){
+  void AddForceDifferential(TVect& result,const TVect& x,const TVect& dx,T scale, bool fixed_a=false){
     SymmetricTridiagonal<T> dfdx(N);
     dfdx.SetToZero();
     for(int e=0;e<N-1;e++){

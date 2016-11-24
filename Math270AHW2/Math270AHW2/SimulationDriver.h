@@ -141,11 +141,12 @@ template <class T>
 class ElasticityParameters:public SimulationParameters<T>{
 public:
   int N;
-  T a;
+  T a, tb;
   T dX;
   T rho;
   T k;
   T Newton_tol;
+    bool fixed_a;
   int max_newton_it;
 
   ElasticityParameters(){}
@@ -158,7 +159,8 @@ class ElasticityDriver: public SimulationDriver<T>{
   using SimulationDriver<T>::dt;
   typedef Eigen::Matrix<T,Eigen::Dynamic, 1> TVect;
   int N;
-  T a,dX;
+  T a,dX,tb;
+    bool fixed_a;
   T rho,k;
   TVect x_n,x_np1,v_n,x_hat,residual,mass,delta;
   T Newton_tol;
@@ -171,7 +173,7 @@ public:
   ElasticityDriver(ElasticityParameters<T>& parameters):
   SimulationDriver<T>(parameters),N(parameters.N),a(parameters.a),dX(parameters.dX),
   rho(parameters.rho),k(parameters.k),x_n(parameters.N),x_np1(parameters.N),v_n(parameters.N),x_hat(parameters.N),residual(parameters.N),mass(parameters.N),delta(parameters.N),
-  Newton_tol(parameters.Newton_tol),max_newton_it(parameters.max_newton_it),be_matrix(parameters.N){
+  Newton_tol(parameters.Newton_tol),max_newton_it(parameters.max_newton_it),be_matrix(parameters.N), tb(parameters.tb), fixed_a(parameters.fixed_a){
     //cons_model=new LinearElasticity<T>(k);
     cons_model=new NeoHookean<T>(k);
     lf=new FEMHyperelasticity<T>(a,dX,N,*cons_model);
@@ -204,7 +206,7 @@ public:
 
     for(int it=1;it<max_newton_it;it++){
       residual=mass.asDiagonal()*(x_hat-x_np1);
-      lf->AddForce(residual,x_np1,dt*dt);
+      lf->AddForce(residual,x_np1,dt*dt, tb);
       T norm=(T)0;for(int i=0;i<N;i++) norm+=residual(i)*residual(i)/mass(i);
       norm=sqrt(norm);
       if(verbose)
@@ -214,7 +216,7 @@ public:
         return;}
       be_matrix.SetToZero();
       for(int i=0;i<N;i++) be_matrix(i,i)=mass(i);
-      lf->AddForceDerivative(be_matrix,x_np1,-dt*dt);
+      lf->AddForceDerivative(be_matrix,x_np1,-dt*dt, fixed_a);
       be_matrix.QRSolve(delta,residual);
       x_np1+=delta;
     }
