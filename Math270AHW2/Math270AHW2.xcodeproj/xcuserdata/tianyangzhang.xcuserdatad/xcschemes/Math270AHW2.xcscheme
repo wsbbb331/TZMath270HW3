@@ -47,7 +47,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/tianyangzhang/Google Drive/UCLA/Fall2016/MAth270A/HW2/Math270AHW2/Math270AHW2/Math270AHW2/output"
+      customWorkingDirectory = "/Users/tianyangzhang/Google Drive/UCLA/Fall2016/MAth270A/HW2/Math270AHW2/Math270AHW2/Math270AHW2"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
