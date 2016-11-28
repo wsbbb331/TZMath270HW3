@@ -246,7 +246,11 @@
 		79BD03CF1DD7C59F005F8287 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = /usr/local/include/eigen3/;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/eigen3/,
+					/Users/tianyangzhang/Documents/eigen3,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-I$(/usr/local/include/eigen3/)",
 					"-O3",
@@ -261,7 +265,11 @@
 		79BD03D01DD7C59F005F8287 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = /usr/local/include/eigen3/;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/eigen3/,
+					/Users/tianyangzhang/Documents/eigen3,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-I$(/usr/local/include/eigen3/)",
 					"-O3",
@@ -292,6 +300,7 @@
 				79BD03D01DD7C59F005F8287 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

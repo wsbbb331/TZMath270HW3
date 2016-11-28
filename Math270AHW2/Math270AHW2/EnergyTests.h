@@ -12,9 +12,11 @@ public:
   typedef Eigen::Matrix<T,Eigen::Dynamic,1> TVect;
   LagrangianForces<T>& lf;
   std::string output_directory;
+    bool fixed_a;
+    T tb;
   int Nrf;
-  EnergyTest(const std::string& output_directory_input,LagrangianForces<T>& lf_input,const int Nrf_input):
-  output_directory(output_directory_input),lf(lf_input),Nrf(Nrf_input){}
+  EnergyTest(const std::string& output_directory_input,LagrangianForces<T>& lf_input,const int Nrf_input, T tb=0, bool fixed_a=false):
+  output_directory(output_directory_input),lf(lf_input),Nrf(Nrf_input),fixed_a(fixed_a),tb(tb){}
 
   void RandomPerturbation(TVect& dx){
     for(int i=0;i<dx.size();i++)
@@ -30,8 +32,8 @@ public:
     TVect delta_x(x.size());
     TVect df(x.size());
     RandomPerturbation(delta_x);
-    lf.AddForce(f,x);
-
+    lf.AddForce(f,x,1,tb,fixed_a);
+      std::cout<<f<<std::endl;
     TVect force_error(Nrf),epsilon(Nrf),derivative_error(Nrf);
     for(int rf=0;rf<Nrf;rf++){
       epsilon(rf)=(T).1/(T)(rf+1);
@@ -42,9 +44,9 @@ public:
       force_error(rf)=fabs((PE_plus-PE_minus)/epsilon(rf)+f.dot(delta_x));
       //force/derivative consistency check
       df=TVect::Zero(x.size());
-      lf.AddForce(df,x+(T).5*epsilon(rf)*delta_x,(T)1/epsilon(rf));
-      lf.AddForce(df,x-(T).5*epsilon(rf)*delta_x,-(T)1/epsilon(rf));
-      lf.AddForceDifferential(df,x,delta_x,-(T)1);
+      lf.AddForce(df,x+(T).5*epsilon(rf)*delta_x,(T)1/epsilon(rf),tb,fixed_a);
+      lf.AddForce(df,x-(T).5*epsilon(rf)*delta_x,-(T)1/epsilon(rf),tb,fixed_a);
+      lf.AddForceDifferential(df,x,delta_x,-(T)1, fixed_a);
       derivative_error(rf)=df.norm();
     }
     FILE_IO::Write_DAT_File(error_force_filename,force_error);
