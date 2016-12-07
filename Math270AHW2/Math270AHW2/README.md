@@ -1,4 +1,2 @@
-tb defines the force at b.
-
-
-fixed_a is the boolean value to define whether a is fixed.
+krylov solver with GMRES using normal equations
+obj construction functions

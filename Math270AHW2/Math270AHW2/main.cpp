@@ -43,7 +43,7 @@ void ElasticitySimulation(){
   parameters.k=(T)1;
   parameters.Newton_tol=(T)1e-8;
   parameters.max_newton_it=40;
-  parameters.final_time=(T)5;
+  parameters.final_time=(T)10;
   parameters.frames_per_second=40;
     parameters.tb = 1;
     parameters.fixed_a = true;
