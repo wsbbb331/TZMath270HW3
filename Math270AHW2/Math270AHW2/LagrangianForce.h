@@ -9,11 +9,13 @@ namespace JIXIE{
 template <class T>
 class LagrangianForces{
   typedef Eigen::Matrix<T,Eigen::Dynamic,1> TVect;
+    typedef Eigen::Matrix<T,Eigen::Dynamic,Eigen::Dynamic> TMat;
 public:
   LagrangianForces(){}
   virtual T PotentialEnergy(const TVect& x){return (T)0;}
   virtual void AddForce(TVect& force,const TVect& x,T scale=(T)1, T tb = (T)0, bool fixed_a=false){}
   virtual void AddForceDerivative(SymmetricTridiagonal<T>& A,const TVect& x,T scale=(T)1, bool fixed_a = false){}
+    virtual void AddForceDerivative(TMat& A,const TVect& x,T scale=(T)1, bool fixed_a = false){}
   virtual void AddForceDifferential(TVect& df,const TVect& x,const TVect& dx,T scale=(T)1, bool fixed_a=false){}
 };
 
@@ -69,6 +71,7 @@ public:
 template <class T>
 class FEMHyperelasticity:public LagrangianForces<T>{
   typedef Eigen::Matrix<T,Eigen::Dynamic,1> TVect;
+    typedef Eigen::Matrix<T,Eigen::Dynamic,Eigen::Dynamic> TMat;
   typedef Eigen::Matrix<T,2,2> TMat2;
   int N;
   T a,dX;
@@ -113,6 +116,17 @@ public:
           A(e+i,e+j)+=element_stiffness(i,j);}}
     }
   }
+    void AddForceDerivative(TMat& A,const TVect& x,T scale=(T)1, bool fixed_a = false){
+        for(int e=0;e<N-1;e++){
+            T dPdF;cons_model.dPdF(dPdF,F(x,e));
+            TMat2 element_stiffness;
+            T entry=scale*dPdF/dX;
+            element_stiffness << -entry,entry,entry,-entry;
+            for(int i=0;i<2;i++){
+                for(int j=0;j<2;j++){
+                    A(e+i,e+j)+=element_stiffness(i,j);}}
+        }
+    }
 
   void AddForceDifferential(TVect& result,const TVect& x,const TVect& dx,T scale, bool fixed_a=false){
     SymmetricTridiagonal<T> dfdx(N);

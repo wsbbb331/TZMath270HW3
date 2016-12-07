@@ -5,6 +5,7 @@
 #include <Eigen/Core>
 #include <fstream>
 #include "LagrangianForce.h"
+#include "KrylovSolver.h"
 
 namespace FILE_IO{
   inline void Write_Binary(std::string directory, std::string name,Eigen::VectorXd& v){
@@ -158,6 +159,7 @@ class ElasticityDriver: public SimulationDriver<T>{
   using SimulationDriver<T>::time;
   using SimulationDriver<T>::dt;
   typedef Eigen::Matrix<T,Eigen::Dynamic, 1> TVect;
+    typedef Eigen::Matrix<T,Eigen::Dynamic,Eigen::Dynamic> TMat;
   int N;
   T a,dX,tb;
     bool fixed_a;
@@ -168,6 +170,7 @@ class ElasticityDriver: public SimulationDriver<T>{
   ConstitutiveModel<T>* cons_model;
   LagrangianForces<T>* lf;
   SymmetricTridiagonal<T> be_matrix;
+    TMat be_matrix_krylov;
 public:
 
   ElasticityDriver(ElasticityParameters<T>& parameters):
@@ -192,6 +195,7 @@ public:
       v_n(i)=(T)0;
     }
     //intialize mass lumped mass matrix from density
+      mass.setZero();
     for(int e=0;e<N-1;e++){
       mass(e)+=(T).5*rho*dX;
       mass(e+1)+=(T).5*rho*dX;}
@@ -214,11 +218,26 @@ public:
       if(norm<Newton_tol){
         Exit_BE();
         return;}
+        if(isnan(norm)||isinf(norm)){
+            std::cout<<"x_hat"<<std::endl<<x_hat<<std::endl;
+            std::cout<<"delta"<<std::endl<<delta<<std::endl;
+            std::cout<<"x_np1"<<std::endl<<x_np1<<std::endl;
+            std::cout<<"residual"<<std::endl<<residual<<std::endl;
+            std::cout<<"mass"<<std::endl<<mass<<std::endl;
+            std::cout<<"error"<<std::endl;
+        }
       be_matrix.SetToZero();
-      for(int i=0;i<N;i++) be_matrix(i,i)=mass(i);
-      lf->AddForceDerivative(be_matrix,x_np1,-dt*dt, fixed_a);
-      be_matrix.QRSolve(delta,residual);
-      x_np1+=delta;
+        be_matrix_krylov.resize(N,N);
+        be_matrix_krylov.setZero();
+      for(int i=0;i<N;i++) be_matrix_krylov(i,i)=mass(i);
+      lf->AddForceDerivative(be_matrix_krylov,x_np1,-dt*dt, fixed_a);
+//      be_matrix.QRSolve(delta,residual);
+        JIXIE::KrylovSolver<T> ksolver;
+        ksolver.computeGMRES(residual, be_matrix_krylov,delta);
+        if(delta.norm() < 5){
+            x_np1+=delta;
+        }
+      
     }
     Exit_BE();
   }
@@ -271,6 +290,22 @@ public:
 
     return true;
   }
+    
+    void writeDX(){
+        std::ofstream outdata;
+        std::string simulation_data_filename(output_directory+std::string("/dx.dat"));
+        outdata.open(simulation_data_filename.c_str());
+        outdata << dX << std::endl;
+        outdata.close();
+    }
+    
+    static void readDX(T& dXLoad, const std::string dir){
+        std::ifstream basic_indata;
+        std::string simulation_data_filename(dir+std::string("/dx.dat"));
+        basic_indata.open(simulation_data_filename.c_str());
+        basic_indata >> dXLoad;
+        basic_indata.close();
+    }
 
 };
 }

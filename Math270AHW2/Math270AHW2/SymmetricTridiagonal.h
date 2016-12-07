@@ -194,6 +194,9 @@ public:
     r2(n-2)=temp(0);
     r1(n-1)=temp(1);
   }
+
+    
+    
 };
 }
 #endif

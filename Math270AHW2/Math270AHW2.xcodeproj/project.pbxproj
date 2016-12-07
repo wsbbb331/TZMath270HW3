@@ -25,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7991F6881DF4BFE9004D2AC5 /* ThreeDOutput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreeDOutput.h; sourceTree = "<group>"; };
 		79BD03C71DD7C59F005F8287 /* Math270AHW2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Math270AHW2; sourceTree = BUILT_PRODUCTS_DIR; };
 		79BD056E1DD7C5DA005F8287 /* EnergyTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnergyTests.h; sourceTree = "<group>"; };
 		79BD056F1DD7C5DA005F8287 /* ImplicitQRSVD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImplicitQRSVD.h; sourceTree = "<group>"; };
@@ -36,6 +37,7 @@
 		79BD05791DD7C5DA005F8287 /* svd */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = svd; sourceTree = "<group>"; };
 		79BD057A1DD7C5DA005F8287 /* SymmetricTridiagonal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SymmetricTridiagonal.h; sourceTree = "<group>"; };
 		79BD057B1DD7C5DA005F8287 /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
+		79E7DBEB1DF767410094C856 /* KrylovSolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KrylovSolver.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,9 +71,11 @@
 			isa = PBXGroup;
 			children = (
 				79BD056E1DD7C5DA005F8287 /* EnergyTests.h */,
+				7991F6881DF4BFE9004D2AC5 /* ThreeDOutput.h */,
 				79BD056F1DD7C5DA005F8287 /* ImplicitQRSVD.h */,
 				79BD05701DD7C5DA005F8287 /* LagrangianForce.h */,
 				79BD05711DD7C5DA005F8287 /* main.cpp */,
+				79E7DBEB1DF767410094C856 /* KrylovSolver.h */,
 				79BD05721DD7C5DA005F8287 /* Makefile */,
 				79BD05731DD7C5DA005F8287 /* output */,
 				79BD05771DD7C5DA005F8287 /* README.md */,
