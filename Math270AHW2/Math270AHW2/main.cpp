@@ -116,37 +116,6 @@ void testThreeDOutput(){
     objBody.writeOutput("outputObject");
 }
 
-
-void testQR(){
-    typedef double T;
-    Eigen::Matrix<T,2,2> A;
-    typedef Eigen::Matrix<T,Eigen::Dynamic,Eigen::Dynamic> TVect;
-    typedef Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> TMat;
-    TVect Q, R;
-    TMat m(2,2);
-    JIXIE::SymmetricTridiagonal<T> ST(A);
-    ST.SetToZero();
-    ST(1,1) = 1;
-    ST(0,0) = 1;
-    ST(0,1) = 2;
-    ST.QR();
-    ST.Set_Q(Q);
-    ST.Set_R(R);
-//    m.setZero();
-//    m.resize(3,3);
-//    m.row(2).setZero();
-//    m.col(2).setZero();
-    m<<1,2,2,1;
-    Eigen::HouseholderQR<TMat> qr(m);
-    TMat QQ(m);
-    TMat RR = qr.matrixQR().triangularView<Eigen::Upper>();
-    std::cout<<"Q is "<<Q;
-    std::cout<<"R is "<<R;
-    std::cout<<"m is "<<m;
-    std::cout<<"Q is "<<QQ;
-    std::cout<<"R is "<<RR;
-}
-
 int main()
 {
 //  EnergyTest();
