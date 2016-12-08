@@ -21,15 +21,24 @@ namespace JIXIE {
             int m = b.size();
 //            std::cout<<"Q is "<<std::endl<<Q<<std::endl;
             TVect v=A * Q.col(n);
-//            std::cout<<"v is "<<std::endl<<v<<std::endl;
+            
             for (int j=0;j<=n;j++){
                 h(j,n) = Q.col(j).transpose()*v;
                 v = v - h(j,n) * Q.col(j);
             }
             h(n+1,n)=v.norm();
-            for (int i=0;i<m;i++){
-                Q(i,n+1) = v(i)/h(n+1,n);
-            }
+//            std::cout<<"Q.col(n+1) is "<<std::endl<<Q.col(n+1)<<std::endl;
+            Q.col(n+1)=v/h(n+1,n);
+//            for (int i=0;i<m;i++){
+//                std::cout<<"v(i) is "<<std::endl<<v(i)<<std::endl;
+//                std::cout<<"h(n+1,n) is "<<std::endl<<h(n+1,n)<<std::endl;
+//                std::cout<<"Q(i,n+1) is "<<std::endl<<Q(i,n+1)<<std::endl;
+//                std::cout<<"Q.cols() is "<<std::endl<<Q.cols()<<std::endl;
+//                std::cout<<"Q.rows() is "<<std::endl<<Q.rows()<<std::endl;
+//                std::cout<<"n is "<<std::endl<<n<<std::endl;
+//                std::cout<<"i is "<<std::endl<<i<<std::endl;
+//                Q(i,n+1) = v(i)/h(n+1,n);
+//            }
 //            std::cout<<"Q is "<<std::endl<<Q<<std::endl;
         }
         
@@ -37,7 +46,7 @@ namespace JIXIE {
             TMat Q,h;
 //            std::cout<<"A is "<<std::endl<<A<<std::endl;
             int m = b.size();
-            Q.resize(m,m);
+            Q.resize(m,m+1);
             h.resize(m+1,m);
             Q.setZero();
             h.setZero();
@@ -51,9 +60,11 @@ namespace JIXIE {
                 arnoldiIteration(b, i, Q, A, h);
                 TMat hTemp = h.block(0,0,i+2,i+1);
                 TMat QTemp = Q.block(0,0,m,i+1);
-                TVect newb(b);
+                TVect newb(i+2);
                 newb.setZero();
                 newb(0) = b.norm();
+//                std::cout<<"hTemp.transpose*htemp is "<<std::endl<<hTemp.transpose()*hTemp<<std::endl;
+//                std::cout<<"hTemp.transpose*newb is "<<std::endl<<hTemp.transpose()*newb<<std::endl;
 //                TVect y = hTemp.colPivHouseholderQr().solve(newb);
 //                TVect y = hTemp.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(newb);
                 TVect y = (hTemp.transpose() * hTemp).ldlt().solve(hTemp.transpose() * newb);
